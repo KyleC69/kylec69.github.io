@@ -6,7 +6,8 @@
   "properties": {
     "ProviderName": {
       "type": "string",
-      "description": "Name of the probe provider (Registry, WMI, FileSystem, ACL, EventLog)."
+      "description": "Name of the probe provider (Registry, WMI, FileSystem, ACL, EventLog)."},
+      "SchemaVersion": {            "type": "string",            "default": "1.0"}
     },
     "ParameterModel": {
       "type": "object",
@@ -34,7 +35,6 @@
         "Code": { "type": "string" },
         "Message": { "type": "string" }
       }
-    }
-  },
+    },
   "required": ["ProviderName", "ParameterModel", "Supports", "OutputShape"]
 }

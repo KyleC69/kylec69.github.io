@@ -6,15 +6,9 @@
     "required": [ "WorkflowName", "Rules" ],
     "properties": {
         "WorkflowName": { "type": "string" },
-        "SchemaVersion": {
-            "type": "string",
-            "default": "1.0"
-        },
+        "SchemaVersion": {            "type": "string",            "default": "1.0"        },
         "Author": { "type": "string" },
-        "CreatedOn": {
-            "type": "string",
-            "format": "date-time"
-        },
+        "CreatedOn": {            "type": "string",            "format": "date-time"        },
         "Applicability": {
             "type": "object",
             "properties": {

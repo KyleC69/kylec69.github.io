@@ -63,27 +63,27 @@
       <div>
         <h3>Workflow schema</h3>
         <ul class="list">
-          <li><strong>URL:</strong> <span class="mono">https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json</span></li>
-          <li><strong>Raw:</strong> <span class="mono">https://raw.githubusercontent.com/&lt;user&gt;/&lt;repo&gt;/main/schemas/workflow.schema.json</span></li>
+          <li><strong>URL:</strong> <span class="mono"><a href="https://kylec69.github.io/WindowsConfigurationAnalyzer/v1/schemas/workflow.schema.json">Url</a></span></li>
+          <li><strong>Raw:</strong> <span class="mono"><a href="https://raw.githubusercontent.com/kylec69/WindowsConfigurationAnalyzer/main/v1/schemas/workflow.schema.json">Raw view</a></span></li>
         </ul>
       </div>
       <div>
         <h3>Rule schema</h3>
         <ul class="list">
-          <li><strong>URL:</strong> <span class="mono">https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/rule.schema.json</span></li>
-          <li><strong>Raw:</strong> <span class="mono">https://raw.githubusercontent.com/&lt;user&gt;/&lt;repo&gt;/main/schemas/rule.schema.json</span></li>
+          <li><strong>URL:</strong> <span class="mono">https://kylec69.github.io/WindowsConfigurationAnalyzer/v1/schemas/rule.schema.json</span></li>
+          <li><strong>Raw:</strong> <span class="mono">https://raw.githubusercontent.com/kylec69/WindowsConfigurationAnalyzer/v1/main/schemas/rule.schema.json</span></li>
         </ul>
       </div>
       <div>
         <h3>Probe schema</h3>
         <ul class="list">
-          <li><strong>URL:</strong> <span class="mono">https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/probe.schema.json</span></li>
-          <li><strong>Raw:</strong> <span class="mono">https://raw.githubusercontent.com/&lt;user&gt;/&lt;repo&gt;/main/schemas/probe.schema.json</span></li>
+          <li><strong>URL:</strong> <span class="mono">https://kylec69.github.io/WindowsConfigurationAnalyzer/v1/schemas/probe.schema.json</span></li>
+          <li><strong>Raw:</strong> <span class="mono">https://raw.githubusercontent.com/kylec69/WindowsConfigurationAnalyzer/v1/main/schemas/probe.schema.json</span></li>
         </ul>
       </div>
     </div>
     <pre><code>{
-  "$schema": "https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json",
+  "$schema": "https://kylec69.github.io/WindowsConfigurationAnalyzer/v1/schemas/workflow.schema.json",
   "WorkflowName": "KitchenSinkProbeValidation",
   "SchemaVersion": "1.0",
   "Author": "Test Suite",
@@ -127,7 +127,7 @@
     <h2>Examples</h2>
     <h3>Kitchen sink workflow (all probes)</h3>
     <pre><code>{
-  "$schema": "https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json",
+  "$schema": "https://kylec69.github.io/WindowsConfigurationAnalyzer/v1/schemas/workflow.schema.json",
   "WorkflowName": "KitchenSinkProbeValidation",
   "SchemaVersion": "1.0",
   "Author": "Test Suite",
@@ -165,7 +165,7 @@ npx ajv validate -s schemas/workflow.schema.json -d examples/workflow-kitchen-si
     <h2>Usage and validation</h2>
     <h3>Referencing with $schema</h3>
     <pre><code>{
-  "$schema": "https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json",
+  "$schema": "https://kylec69.github.io/WindowsConfigurationAnalyzer/v1/schemas/workflow.schema.json",
   "WorkflowName": "WindowsSecurityBaseline",
   "...": "..."
 }</code></pre>
@@ -173,7 +173,7 @@ npx ajv validate -s schemas/workflow.schema.json -d examples/workflow-kitchen-si
     <h3>Pinning versions</h3>
     <p>For stability, pin to a specific versioned path:</p>
     <pre><code>{
-  "$schema": "https://&lt;user&gt;.github.io/&lt;repo&gt;/v1/schemas/workflow.schema.json"
+  "$schema": "https://kylec69.github.io/WindowsConfigurationAnalyzer/v1/schemas/workflow.schema.json"
 }</code></pre>
 
     <h3>NuGet / .NET validation</h3>
@@ -181,7 +181,7 @@ npx ajv validate -s schemas/workflow.schema.json -d examples/workflow-kitchen-si
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
-var schemaText = await httpClient.GetStringAsync("https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json");
+var schemaText = await httpClient.GetStringAsync("https://kylec69.github.io/WindowsConfigurationAnalyzer/v1/schemas/workflow.schema.json");
 var schema = JSchema.Parse(schemaText);
 
 var json = JObject.Parse(System.IO.File.ReadAllText("examples/workflow-kitchen-sink.json"));
@@ -202,7 +202,7 @@ bool isValid = json.IsValid(schema, out errors);</code></pre>
 
   <footer>
     <p>© 2025 Windows Config Analyzer Schemas. Publish via GitHub Pages: Settings → Pages → Branch: <span class="kbd">main</span> → Folder: <span class="kbd">/</span>. Place this file at <span class="kbd">/default.html</span> or <span class="kbd">/index.html</span>.</p>
-    <p>Replace <span class="kbd">&lt;user&gt;</span> and <span class="kbd">&lt;repo&gt;</span> placeholders with your GitHub namespace. Keep raw URLs in README for tooling.</p>
+    <p>Replace <span class="kbd">kylec69</span> and <span class="kbd">WindowsConfigurationAnalyzer</span> placeholders with your GitHub namespace. Keep raw URLs in README for tooling.</p>
   </footer>
 
 </main>

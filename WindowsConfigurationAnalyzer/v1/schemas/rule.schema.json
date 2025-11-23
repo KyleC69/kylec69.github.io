@@ -3,9 +3,11 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Configuration Rule",
     "type": "object",
+    "Version": "1.0.0",
     "required": [ "RuleName", "Provider", "Parameters", "Condition" ],
     "properties": {
         "RuleName": { "type": "string" },
+        "SchemaVersion": {            "type": "string",            "default": "1.0"},
         "Provider": {
             "type": "string",
             "enum": [ "Registry", "FileSystem", "ACL", "WMI", "EventLog", "Custom" ]
