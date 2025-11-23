@@ -1,6 +1,6 @@
 {
     "$id": "rule.schema.json",
-    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$schema": "https://raw.githubusercontent.com/KyleC69/kylec69.github.io/refs/heads/main/WindowsConfigurationAnalyzer/v1/schemas/rule.schema.json",
     "title": "Configuration Rule",
     "type": "object",
     "Version": "1.0.0",
