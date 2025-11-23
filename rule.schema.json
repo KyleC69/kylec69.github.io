@@ -1,0 +1,78 @@
+{
+    "$id": "rule.schema.json",
+    "$schema": "https://raw.githubusercontent.com/KyleC69/kylec69.github.io/refs/heads/main/WindowsConfigurationAnalyzer/v1/schemas/rule.schema.json",
+    "title": "Configuration Rule",
+    "type": "object",
+    "Version": "1.0.0",
+    "required": [ "RuleName", "Provider", "Parameters", "Condition" ],
+    "properties": {
+        "RuleName": { "type": "string" },
+        "SchemaVersion": {            "type": "string",            "default": "1.0"},
+        "Provider": {
+            "type": "string",
+            "enum": [ "Registry", "FileSystem", "ACL", "WMI", "EventLog", "Custom" ]
+        },
+        "Parameters": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "Condition": {
+            "type": "object",
+            "required": [ "Operator", "Expected" ],
+            "properties": {
+                "Operator": {
+                    "type": "string",
+                    "enum": [
+                        "Equals",
+                        "NotEquals",
+                        "GreaterThan",
+                        "LessThan",
+                        "Contains",
+                        "NotContains",
+                        "RegexMatch",
+                        "Exists",
+                        "NotExists"
+                    ]
+                },
+                "Expected": {
+                    "type": [ "string", "number", "boolean", "array", "object", "null" ]
+                }
+            }
+        },
+        "Severity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+        },
+        "Message": { "type": "string" },
+        "Tags": {
+            "type": "array",
+            "items": { "type": "string" }
+        },
+        "Execution": {
+            "type": "object",
+            "description": "Rule-level execution options",
+            "properties": {
+                "RunMode": {
+                    "type": "string",
+                    "enum": [ "Independent", "Sequential" ],
+                    "default": "Independent"
+                },
+                "Timeout": {
+                    "type": "string",
+                    "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$",
+                    "description": "Optional per-rule timeout (hh:mm:ss)"
+                },
+                "StopOnFailure": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "DependsOn": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "Optional list of other rule names this rule depends on"
+                }
+            }
+        }
+    }
+}

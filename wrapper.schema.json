@@ -1,0 +1,65 @@
+{
+    "$id": "workflow.schema.json",
+    "$schema": "https://raw.githubusercontent.com/KyleC69/kylec69.github.io/refs/heads/main/WindowsConfigurationAnalyzer/v1/schemas/workflow.schema.json",
+    "title": "Configuration Workflow",
+    "type": "object",
+    "required": [ "WorkflowName", "Rules" ],
+    "properties": {
+        "WorkflowName": { "type": "string" },
+        "SchemaVersion": {            "type": "string",            "default": "1.0"        },
+        "Author": { "type": "string" },
+        "CreatedOn": {            "type": "string",            "format": "date-time"        },
+        "Applicability": {
+            "type": "object",
+            "properties": {
+                "OSFamily": { "type": "string" },
+                "MinVersion": { "type": "string" },
+                "MaxVersion": { "type": "string" },
+                "Product": { "type": "string" }
+            }
+        },
+        "Constraints": {
+            "type": "object",
+            "properties": {
+                "RunSequentially": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "StopOnFailure": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "Timeout": {
+                    "type": "string",
+                    "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$"
+                }
+            }
+        },
+        "Rules": {
+            "type": "array",
+            "items": { "$ref": "rule.schema.json" }
+        },
+        "Results": {
+            "type": "array",
+            "description": "Aggregated results after execution",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "RuleName": { "type": "string" },
+                    "Success": { "type": "boolean" },
+                    "Message": { "type": "string" },
+                    "SeverityScore": { "type": "integer" },
+                    "Timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "SchemaVersion": { "type": "string" },
+                    "ExecutionMode": {
+                        "type": "string",
+                        "enum": [ "Independent", "Sequential" ]
+                    }
+                }
+            }
+        }
+    }
+}
