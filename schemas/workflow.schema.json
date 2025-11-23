@@ -37,7 +37,7 @@
         },
         "Rules": {
             "type": "array",
-            "items": { "$ref": "https://kyle69.github.io/schemas/rule.schema.json" }
+            "items": { "$ref": "https://kylec69.github.io/schemas/rule.schema.json" }
         },
         "Results": {
             "type": "array",
