@@ -1,13 +1,12 @@
 {
     "$id": "rule.schema.json",
-    "$schema": "https://raw.githubusercontent.com/KyleC69/kylec69.github.io/refs/heads/main/WindowsConfigurationAnalyzer/v1/schemas/rule.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Configuration Rule",
+    "version": "1.0.0",
     "type": "object",
-    "Version": "1.0.0",
     "required": [ "RuleName", "Provider", "Parameters", "Condition" ],
     "properties": {
         "RuleName": { "type": "string" },
-        "SchemaVersion": {            "type": "string",            "default": "1.0"},
         "Provider": {
             "type": "string",
             "enum": [ "Registry", "FileSystem", "ACL", "WMI", "EventLog", "Custom" ]

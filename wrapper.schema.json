@@ -1,6 +1,6 @@
 {
     "$id": "workflow.schema.json",
-    "$schema": "https://raw.githubusercontent.com/KyleC69/kylec69.github.io/refs/heads/main/WindowsConfigurationAnalyzer/v1/schemas/workflow.schema.json",
+    "$schema": "http://json-schema.org/draft/2020-12/schema#",
     "title": "Configuration Workflow",
     "type": "object",
     "required": [ "WorkflowName", "Rules" ],

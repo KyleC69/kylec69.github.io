@@ -1,13 +1,13 @@
 {
-  "$schema": "https://raw.githubusercontent.com/KyleC69/kylec69.github.io/refs/heads/main/WindowsConfigurationAnalyzer/v1/schemas/probe.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Probe Schema",
+  "version": "1.0.0",
   "description": "Defines the contract for a probe provider and its parameters.",
   "type": "object",
   "properties": {
     "ProviderName": {
       "type": "string",
-      "description": "Name of the probe provider (Registry, WMI, FileSystem, ACL, EventLog)."},
-      "SchemaVersion": {            "type": "string",            "default": "1.0"}
+      "description": "Name of the probe provider (Registry, WMI, FileSystem, ACL, EventLog)."}
     },
     "ParameterModel": {
       "type": "object",
