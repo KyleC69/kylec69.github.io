@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Windows Config Analyzer Schemas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Reference documentation for Windows Config Analyzer JSON schemas and examples." />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --ink: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --good: #34d399;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --code-bg: #0b1220;
+    }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji"; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header { padding: 2rem 1.25rem; border-bottom: 1px solid #1f2937; background: linear-gradient(180deg, rgba(96,165,250,0.15), rgba(17,24,39,0.2)); }
+    header h1 { margin: 0 0 .5rem; font-size: 2rem; }
+    header p { margin: 0.25rem 0; color: var(--muted); }
+    main { max-width: 980px; margin: 0 auto; padding: 1.5rem; }
+    section { background: var(--panel); border: 1px solid #1f2937; border-radius: 12px; padding: 1.25rem; margin: 1rem 0; }
+    h2 { margin-top: 0; font-size: 1.4rem; }
+    h3 { font-size: 1.1rem; margin-top: 1.2rem; }
+    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .badge { display: inline-block; padding: .25rem .5rem; border-radius: 999px; font-size: .8rem; border: 1px solid #1f2937; background: #0b1220; color: var(--muted); margin-right: .5rem; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background: var(--code-bg); border: 1px solid #1f2937; padding: .1rem .35rem; border-radius: 6px; }
+    pre { background: var(--code-bg); border: 1px solid #1f2937; border-radius: 12px; padding: 1rem; overflow: auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .callout { border-left: 4px solid var(--accent); padding-left: .75rem; margin: .5rem 0; color: var(--muted); }
+    .list { list-style: none; padding-left: 0; }
+    .list li { margin: .35rem 0; }
+    footer { color: var(--muted); padding: 2rem 1.25rem; text-align: center; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th, .table td { border: 1px solid #1f2937; padding: .6rem; text-align: left; }
+    .table th { background: #0b1220; color: var(--ink); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Windows Config Analyzer Schemas</h1>
+  <p>Provenance‑rich JSON schemas for workflows, rules, and probes. Versioned, auditable, and ready for GitHub Pages consumption.</p>
+  <p>
+    <span class="badge">Version: v1</span>
+    <span class="badge">Status: Public</span>
+    <span class="badge">Last updated: <!-- ISO date here -->2025‑11‑22</span>
+  </p>
+</header>
+
+<main>
+
+  <section id="quick-start">
+    <h2>Quick start</h2>
+    <p class="callout">Use the schema URLs below directly in your workflow JSON via the <span class="kbd">$schema</span> property. This enables IDE validation and keeps artifacts self‑describing.</p>
+    <div class="grid">
+      <div>
+        <h3>Workflow schema</h3>
+        <ul class="list">
+          <li><strong>URL:</strong> <span class="mono">https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json</span></li>
+          <li><strong>Raw:</strong> <span class="mono">https://raw.githubusercontent.com/&lt;user&gt;/&lt;repo&gt;/main/schemas/workflow.schema.json</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Rule schema</h3>
+        <ul class="list">
+          <li><strong>URL:</strong> <span class="mono">https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/rule.schema.json</span></li>
+          <li><strong>Raw:</strong> <span class="mono">https://raw.githubusercontent.com/&lt;user&gt;/&lt;repo&gt;/main/schemas/rule.schema.json</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Probe schema</h3>
+        <ul class="list">
+          <li><strong>URL:</strong> <span class="mono">https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/probe.schema.json</span></li>
+          <li><strong>Raw:</strong> <span class="mono">https://raw.githubusercontent.com/&lt;user&gt;/&lt;repo&gt;/main/schemas/probe.schema.json</span></li>
+        </ul>
+      </div>
+    </div>
+    <pre><code>{
+  "$schema": "https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json",
+  "WorkflowName": "KitchenSinkProbeValidation",
+  "SchemaVersion": "1.0",
+  "Author": "Test Suite",
+  "Constraints": { "RunSequentially": false, "StopOnFailure": false, "Timeout": "00:20:00" },
+  "ConfigSets": [ /* ...rules... */ ]
+}</code></pre>
+  </section>
+
+  <section id="schema-contracts">
+    <h2>Schema contracts</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Artifact</th>
+          <th>Purpose</th>
+          <th>Key properties</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>workflow.schema.json</td>
+          <td>Top‑level orchestration contract for config sets, constraints, and provenance.</td>
+          <td class="mono">WorkflowName, SchemaVersion, Author, Constraints, ConfigSets</td>
+        </tr>
+        <tr>
+          <td>rule.schema.json</td>
+          <td>Atomic rule definition with provider parameters, conditions, severity, and messages.</td>
+          <td class="mono">RuleName, Provider, Parameters, Condition, Severity, Message, Execution</td>
+        </tr>
+        <tr>
+          <td>probe.schema.json</td>
+          <td>Provider capability shape and parameter models for Registry, WMI, FileSystem, ACL, EventLog, etc.</td>
+          <td class="mono">ProviderName, ParameterModel, Supports, OutputShape, ErrorModel</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="callout">All schemas are designed for audit‑grade clarity: self‑describing fields, explicit contracts, and labeled states for deterministic reporting.</p>
+  </section>
+
+  <section id="examples">
+    <h2>Examples</h2>
+    <h3>Kitchen sink workflow (all probes)</h3>
+    <pre><code>{
+  "$schema": "https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json",
+  "WorkflowName": "KitchenSinkProbeValidation",
+  "SchemaVersion": "1.0",
+  "Author": "Test Suite",
+  "Constraints": { "RunSequentially": false, "StopOnFailure": false, "Timeout": "00:20:00" },
+  "ConfigSets": [
+    { "ConfigSetName": "AllProbesValidation", "Rules": [
+      { "RuleName": "RegistrySmartScreen", "Provider": "Registry",
+        "Parameters": { "KeyPath": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System", "ValueName": "EnableSmartScreen" },
+        "Condition": { "Operator": "Equals", "Expected": 1 }, "Severity": 5, "Message": "SmartScreen must be enabled" },
+      { "RuleName": "WMIFirewallService", "Provider": "WMI",
+        "Parameters": { "Class": "Win32_Service", "Property": "Started", "Filter": "Name='MpsSvc'" },
+        "Condition": { "Operator": "Equals", "Expected": true }, "Severity": 8, "Message": "Firewall service must be running" },
+      { "RuleName": "FileSystemHostsFile", "Provider": "FileSystem",
+        "Parameters": { "Path": "C:\\Windows\\System32\\drivers\\etc\\hosts" },
+        "Condition": { "Operator": "Exists" }, "Severity": 4, "Message": "Hosts file must exist" },
+      { "RuleName": "ACLHostsFileRestricted", "Provider": "ACL",
+        "Parameters": { "Path": "C:\\Windows\\System32\\drivers\\etc\\hosts" },
+        "Condition": { "Operator": "Contains", "Expected": "Administrators" }, "Severity": 9, "Message": "Hosts file must be restricted to Administrators" },
+      { "RuleName": "EventLogSecurityExists", "Provider": "EventLog",
+        "Parameters": { "LogName": "Security" }, "Condition": { "Operator": "Exists" }, "Severity": 10, "Message": "Security event log must exist" },
+      { "RuleName": "RegistryAuditPolicy", "Provider": "Registry",
+        "Parameters": { "KeyPath": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa", "ValueName": "AuditBaseObjects" },
+        "Condition": { "Operator": "Equals", "Expected": 1 }, "Severity": 7, "Message": "Audit policy must be enabled",
+        "Execution": { "DependsOn": ["EventLogSecurityExists"] } }
+    ] }
+  ]
+}</code></pre>
+
+    <h3>Validation via VS Code (ajv)</h3>
+    <pre><code class="bash">npm install -D ajv ajv-cli
+npx ajv validate -s schemas/workflow.schema.json -d examples/workflow-kitchen-sink.json</code></pre>
+  </section>
+
+  <section id="usage">
+    <h2>Usage and validation</h2>
+    <h3>Referencing with $schema</h3>
+    <pre><code>{
+  "$schema": "https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json",
+  "WorkflowName": "WindowsSecurityBaseline",
+  "...": "..."
+}</code></pre>
+
+    <h3>Pinning versions</h3>
+    <p>For stability, pin to a specific versioned path:</p>
+    <pre><code>{
+  "$schema": "https://&lt;user&gt;.github.io/&lt;repo&gt;/v1/schemas/workflow.schema.json"
+}</code></pre>
+
+    <h3>NuGet / .NET validation</h3>
+    <pre><code class="csharp">// C# using Newtonsoft.Json.Schema
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
+
+var schemaText = await httpClient.GetStringAsync("https://&lt;user&gt;.github.io/&lt;repo&gt;/schemas/workflow.schema.json");
+var schema = JSchema.Parse(schemaText);
+
+var json = JObject.Parse(System.IO.File.ReadAllText("examples/workflow-kitchen-sink.json"));
+IList&lt;string&gt; errors;
+bool isValid = json.IsValid(schema, out errors);</code></pre>
+  </section>
+
+  <section id="governance">
+    <h2>Provenance and governance</h2>
+    <ul>
+      <li><strong>Versioning:</strong> Use <span class="kbd">/v1</span>, <span class="kbd">/v2</span> folders. Tag releases (e.g., <span class="kbd">v1.0.0</span>).</li>
+      <li><strong>Immutability:</strong> Once published, don’t modify prior versions; add a new version for changes.</li>
+      <li><strong>Contracts:</strong> Separate enumeration, evaluation, and reporting layers to preserve audit‑grade clarity.</li>
+      <li><strong>Probes:</strong> Document provider capabilities and parameter contracts in <span class="kbd">probe.schema.json</span>.</li>
+      <li><strong>Examples:</strong> Ship runnable workflows under <span class="kbd">/examples</span> to validate end‑to‑end.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>© 2025 Windows Config Analyzer Schemas. Publish via GitHub Pages: Settings → Pages → Branch: <span class="kbd">main</span> → Folder: <span class="kbd">/</span>. Place this file at <span class="kbd">/default.html</span> or <span class="kbd">/index.html</span>.</p>
+    <p>Replace <span class="kbd">&lt;user&gt;</span> and <span class="kbd">&lt;repo&gt;</span> placeholders with your GitHub namespace. Keep raw URLs in README for tooling.</p>
+  </footer>
+
+</main>
+
+</body>
+</html>

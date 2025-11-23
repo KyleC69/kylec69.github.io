@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Probe Schema",
+  "description": "Defines the contract for a probe provider and its parameters.",
+  "type": "object",
+  "properties": {
+    "ProviderName": {
+      "type": "string",
+      "description": "Name of the probe provider (Registry, WMI, FileSystem, ACL, EventLog)."
+    },
+    "ParameterModel": {
+      "type": "object",
+      "description": "Parameters required by this provider.",
+      "additionalProperties": true
+    },
+    "Supports": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of supported operations (Exists, Equals, Contains, GreaterThan, etc.)."
+    },
+    "OutputShape": {
+      "type": "object",
+      "description": "Defines the structure of the probe’s output (value, status, error).",
+      "properties": {
+        "Value": { "type": ["string", "number", "boolean", "object"] },
+        "Status": { "type": "string" },
+        "Error": { "type": "string" }
+      }
+    },
+    "ErrorModel": {
+      "type": "object",
+      "description": "Defines how errors are reported by the probe.",
+      "properties": {
+        "Code": { "type": "string" },
+        "Message": { "type": "string" }
+      }
+    }
+  },
+  "required": ["ProviderName", "ParameterModel", "Supports", "OutputShape"]
+}
