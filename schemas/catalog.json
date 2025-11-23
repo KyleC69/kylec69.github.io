@@ -5,7 +5,7 @@
       "title": "Configuration Workflow",
       "description": "Defines a workflow configuration with rules, constraints, applicability, and results. Designed to orchestrate configuration validation tasks within the Windows Configuration Analyzer framework.",
       "version": "1.0.0",
-      "metaSchema": "https://json-schema.org/draft/2020-12/schema",
+      "metaSchema": "https://json-schema.org/draft-07/schema",
       "owner": "Governance Team",
       "created": "2025-11-23T02:30:00Z",
       "tags": ["workflow", "rules", "audit", "configuration"],
@@ -22,7 +22,7 @@
       "title": "Rule",
       "description": "Defines the structure of an individual rule used in workflows.",
       "version": "1.0.0",
-      "metaSchema": "https://json-schema.org/draft/2020-12/schema",
+      "metaSchema": "https://json-schema.org/draft-07/schema",
       "owner": "Governance Team",
       "tags": ["rule", "workflow", "validation"]
     },
@@ -31,7 +31,7 @@
       "title": "Probe",
       "description": "Defines the structure and parameters of a probe used by rules.",
       "version": "1.0.0",
-      "metaSchema": "https://json-schema.org/draft/2020-12/schema",
+      "metaSchema": "https://json-schema.org/draft-07/schema",
       "owner": "Governance Team",
       "tags": ["probe", "rule", "validation"]
     }

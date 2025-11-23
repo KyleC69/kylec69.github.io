@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "title": "Probe Schema",
   "version": "1.0.0",
   "description": "Defines the contract for a probe provider and its parameters.",
