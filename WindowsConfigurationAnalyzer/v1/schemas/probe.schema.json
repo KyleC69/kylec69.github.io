@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://raw.githubusercontent.com/KyleC69/kylec69.github.io/refs/heads/main/WindowsConfigurationAnalyzer/v1/schemas/probe.schema.json",
   "title": "Probe Schema",
   "description": "Defines the contract for a probe provider and its parameters.",
   "type": "object",
