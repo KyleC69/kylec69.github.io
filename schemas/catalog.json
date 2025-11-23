@@ -1,7 +1,7 @@
 {
   "schemas": [
     {
-      "id": "https://kylec69.github.io/workflow.schema.json",
+      "id": "https://kylec69.github.io/schemas/workflow.schema.json",
       "title": "Configuration Workflow",
       "description": "Defines a workflow configuration with rules, constraints, applicability, and results. Designed to orchestrate configuration validation tasks within the Windows Configuration Analyzer framework.",
       "version": "1.0.0",
@@ -10,7 +10,7 @@
       "created": "2025-11-23T02:30:00Z",
       "tags": ["workflow", "rules", "audit", "configuration"],
       "dependsOn": [
-        "https://kylec69.github.io/rule.schema.json"
+        "https://kylec69.github.io/schemas/rule.schema.json"
       ],
       "provenance": {
         "sourceRepo": "https://github.com/KyleC69/WindowsConfigurationAnalyzer",
@@ -18,7 +18,7 @@
       }
     },
     {
-      "id": "https://kylec69.github.io/rule.schema.json",
+      "id": "https://kylec69.github.io/schemas/rule.schema.json",
       "title": "Rule",
       "description": "Defines the structure of an individual rule used in workflows.",
       "version": "1.0.0",
@@ -27,7 +27,7 @@
       "tags": ["rule", "workflow", "validation"]
     },
     {
-      "id": "https://kylec69.github.io/probe.schema.json",
+      "id": "https://kylec69.github.io/schemas/probe.schema.json",
       "title": "Probe",
       "description": "Defines the structure and parameters of a probe used by rules.",
       "version": "1.0.0",
