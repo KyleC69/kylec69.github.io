@@ -9,9 +9,6 @@
       "owner": "Governance Team",
       "created": "2025-11-23T02:30:00Z",
       "tags": ["workflow", "rules", "audit", "configuration"],
-      "dependsOn": [
-        "https://kylec69.github.io/schemas/rule.schema.json"
-      ],
       "provenance": {
         "sourceRepo": "https://github.com/KyleC69/WindowsConfigurationAnalyzer",
         "lastReviewedBy": "Kyle"
