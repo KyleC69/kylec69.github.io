@@ -1,244 +1,326 @@
 {
-  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kylec69.github.io/schemas/workflow.schema.json",
   "title": "Workflow",
+  "description": "Defines a workflow composed of rules, constraints, and results. Contributors should use this schema to author portable, audit-grade workflows.",
   "type": "object",
   "required": ["WorkflowName", "Rules"],
   "properties": {
-    "$schema": { "type": "string" },
-    "WorkflowName": { "type": "string" },
-    "SchemaVersion": { "type": "string" },
-    "Author": { "type": "string" },
-    "CreatedOn": { "type": "string", "format": "date-time" },
-
+    "WorkflowName": {
+      "type": "string",
+      "description": "Human-readable name of the workflow.",
+      "examples": ["Windows Registry Audit", "Service Health Check"]
+    },
+    "SchemaVersion": {
+      "type": "string",
+      "description": "Version of the workflow schema used.",
+      "examples": ["1.0.0"]
+    },
+    "Author": {
+      "type": "string",
+      "description": "Name of the workflow author.",
+      "examples": ["Kyle C."]
+    },
+    "CreatedOn": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp of the workflow.",
+      "examples": ["2025-11-24T14:40:00Z"]
+    },
     "Applicability": {
       "type": "object",
+      "description": "Defines the OS/product scope where this workflow applies.",
       "properties": {
-        "OSFamily": { "type": "string" },
-        "MinVersion": { "type": "string" },
-        "MaxVersion": { "type": "string" },
-        "Product": { "type": "string" }
-      }
+        "OSFamily": { "type": "string", "examples": ["Windows", "Linux"] },
+        "MinVersion": { "type": "string", "examples": ["10.0.19041"] },
+        "MaxVersion": { "type": "string", "examples": ["10.0.22621"] },
+        "Product": { "type": "string", "examples": ["Windows Server"] }
+      },
+      "unevaluatedProperties": false
     },
-
     "Constraints": {
       "type": "object",
+      "description": "Execution constraints for the workflow.",
       "properties": {
-        "RunSequentially": { "type": "boolean" },
-        "StopOnFailure": { "type": "boolean" },
+        "RunSequentially": { "type": "boolean", "default": false, "description": "Run rules sequentially instead of independently." },
+        "StopOnFailure": { "type": "boolean", "default": false, "description": "Stop workflow execution on first rule failure." },
         "Timeout": {
           "type": "string",
-          "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$"
+          "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$",
+          "description": "Maximum runtime in HH:MM:SS format.",
+          "examples": ["00:30:00"]
         }
-      }
+      },
+      "unevaluatedProperties": false
     },
-
     "Rules": {
       "type": "array",
+      "description": "List of rules to evaluate.",
       "items": { "$ref": "#/definitions/Rule" }
     },
-
     "Results": {
       "type": "array",
+      "description": "Evaluation results from workflow execution.",
       "items": { "$ref": "#/definitions/Result" }
     }
   },
-
+  "examples": [
+    {
+      "WorkflowName": "Service health check",
+      "SchemaVersion": "1.0.0",
+      "Author": "Kyle C.",
+      "CreatedOn": "2025-11-24T14:40:00Z",
+      "Applicability": { "OSFamily": "Windows", "MinVersion": "10.0.19041" },
+      "Constraints": { "RunSequentially": true, "Timeout": "00:05:00" },
+      "Rules": [
+        {
+          "RuleName": "VerifyServiceStatus",
+          "Provider": "Service",
+          "Parameters": { "ServiceName": "w32time", "ExpectedStatus": "Running" },
+          "Condition": { "Operator": "Equals", "Expected": true },
+          "Severity": 7,
+          "Message": "The Windows Time service must be running",
+          "Tags": ["baseline", "service"]
+        }
+      ]
+    }
+  ],
   "definitions": {
     "Rule": {
       "type": "object",
+      "description": "A single rule binding a provider to parameters and a condition.",
       "required": ["RuleName", "Provider", "Parameters", "Condition"],
       "properties": {
-        "RuleName": { "type": "string" },
+        "RuleName": {
+          "type": "string",
+          "description": "Unique identifier for the rule.",
+          "examples": ["CheckRegistryKey", "VerifyServiceStatus"]
+        },
         "Provider": {
           "type": "string",
-          "enum": [
-            "Registry",
-            "FileSystem",
-            "ACL",
-            "WMI",
-            "EventLog",
-            "Service",
-            "Process",
-            "Custom"
-          ]
+          "description": "The subsystem or resource this rule inspects.",
+          "enum": ["Registry", "FileSystem", "ACL", "WMI", "EventLog", "Service", "Process", "Custom"]
         },
         "Parameters": {
-          "oneOf": [
-            { "$ref": "#/definitions/RegistryParameters" },
-            { "$ref": "#/definitions/FileSystemParameters" },
-            { "$ref": "#/definitions/AclParameters" },
-            { "$ref": "#/definitions/WmiParameters" },
-            { "$ref": "#/definitions/EventLogParameters" },
-            { "$ref": "#/definitions/ServiceParameters" },
-            { "$ref": "#/definitions/ProcessParameters" },
-            { "$ref": "#/definitions/CustomParameters" }
-          ]
+          "description": "Provider-specific parameters. Bound via conditional logic to the selected Provider type."
         },
         "Condition": { "$ref": "#/definitions/Condition" },
-        "Severity": { "type": "integer", "minimum": 0, "maximum": 10 },
-        "Message": { "type": "string" },
+        "Severity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Severity score applied when the rule fails.",
+          "examples": [5]
+        },
+        "Message": {
+          "type": "string",
+          "description": "Message to display when the rule evaluates.",
+          "examples": ["Registry key missing", "Service not running"]
+        },
         "Tags": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": { "type": "string" },
+          "description": "Optional tags for categorization.",
+          "examples": [["security", "configuration"]]
         },
         "Execution": { "$ref": "#/definitions/ExecutionOptions" }
-      }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "Provider": { "const": "Registry" } }, "required": ["Provider"] },
+          "then": { "properties": { "Parameters": { "$ref": "#/definitions/RegistryParameters" } }, "required": ["Parameters"] }
+        },
+        {
+          "if": { "properties": { "Provider": { "const": "FileSystem" } }, "required": ["Provider"] },
+          "then": { "properties": { "Parameters": { "$ref": "#/definitions/FileSystemParameters" } }, "required": ["Parameters"] }
+        },
+        {
+          "if": { "properties": { "Provider": { "const": "ACL" } }, "required": ["Provider"] },
+          "then": { "properties": { "Parameters": { "$ref": "#/definitions/AclParameters" } }, "required": ["Parameters"] }
+        },
+        {
+          "if": { "properties": { "Provider": { "const": "WMI" } }, "required": ["Provider"] },
+          "then": { "properties": { "Parameters": { "$ref": "#/definitions/WmiParameters" } }, "required": ["Parameters"] }
+        },
+        {
+          "if": { "properties": { "Provider": { "const": "EventLog" } }, "required": ["Provider"] },
+          "then": { "properties": { "Parameters": { "$ref": "#/definitions/EventLogParameters" } }, "required": ["Parameters"] }
+        },
+        {
+          "if": { "properties": { "Provider": { "const": "Service" } }, "required": ["Provider"] },
+          "then": { "properties": { "Parameters": { "$ref": "#/definitions/ServiceParameters" } }, "required": ["Parameters"] }
+        },
+        {
+          "if": { "properties": { "Provider": { "const": "Process" } }, "required": ["Provider"] },
+          "then": { "properties": { "Parameters": { "$ref": "#/definitions/ProcessParameters" } }, "required": ["Parameters"] }
+        },
+        {
+          "if": { "properties": { "Provider": { "const": "Custom" } }, "required": ["Provider"] },
+          "then": { "properties": { "Parameters": { "$ref": "#/definitions/CustomParameters" } }, "required": ["Parameters"] }
+        }
+      ],
+      "unevaluatedProperties": false
     },
 
     "RegistryParameters": {
       "type": "object",
+      "description": "Parameters for registry checks.",
       "required": ["Hive", "Path", "Key"],
       "properties": {
-        "Hive": { "type": "string" },
-        "Path": { "type": "string" },
-        "Key": { "type": "string" }
+        "Hive": { "type": "string", "description": "Registry hive.", "examples": ["HKEY_LOCAL_MACHINE", "HKEY_CURRENT_USER"] },
+        "Path": { "type": "string", "description": "Registry path within the hive.", "examples": ["SOFTWARE\\MyApp"] },
+        "Key": { "type": "string", "description": "Registry value name.", "examples": ["InstallPath"] }
       },
-      "additionalProperties": false
+      "unevaluatedProperties": false
     },
 
     "FileSystemParameters": {
       "type": "object",
+      "description": "Parameters for file system checks.",
       "required": ["Path"],
       "properties": {
-        "Path": { "type": "string" },
-        "Permissions": { "type": "string" },
-        "Recursive": { "type": "boolean" }
+        "Path": { "type": "string", "description": "Full file or directory path.", "examples": ["C:\\Program Files\\MyApp"] },
+        "Permissions": { "type": "string", "description": "Expected permission level or descriptor.", "examples": ["Read", "Write"] },
+        "Recursive": { "type": "boolean", "description": "Whether to recurse into subdirectories.", "examples": [true] }
       },
-      "additionalProperties": false
+      "unevaluatedProperties": false
     },
 
     "AclParameters": {
       "type": "object",
+      "description": "Parameters for ACL checks.",
       "required": ["Path", "Identity", "Rights"],
       "properties": {
-        "Path": { "type": "string" },
-        "Identity": { "type": "string" },
-        "Rights": { "type": "string" }
+        "Path": { "type": "string", "description": "Object path (file or directory) to inspect.", "examples": ["C:\\ProgramData"] },
+        "Identity": { "type": "string", "description": "Account or group whose rights are being validated.", "examples": ["Administrators"] },
+        "Rights": { "type": "string", "description": "Expected rights for the identity.", "examples": ["FullControl"] }
       },
-      "additionalProperties": false
+      "unevaluatedProperties": false
     },
 
     "WmiParameters": {
       "type": "object",
+      "description": "Parameters for WMI queries.",
       "required": ["Namespace", "Class", "Property"],
       "properties": {
-        "Namespace": { "type": "string" },
-        "Class": { "type": "string" },
-        "Property": { "type": "string" }
+        "Namespace": { "type": "string", "description": "WMI namespace.", "examples": ["root\\cimv2"] },
+        "Class": { "type": "string", "description": "WMI class name.", "examples": ["Win32_OperatingSystem"] },
+        "Property": { "type": "string", "description": "Property to evaluate.", "examples": ["Caption"] }
       },
-      "additionalProperties": false
+      "unevaluatedProperties": false
     },
 
     "EventLogParameters": {
       "type": "object",
+      "description": "Parameters for event log checks.",
       "required": ["LogName"],
       "properties": {
-        "LogName": { "type": "string" },
-        "Source": { "type": "string" },
-        "EventId": { "type": "integer" },
-        "Since": { "type": "string", "format": "date-time" }
+        "LogName": { "type": "string", "description": "Windows event log name.", "examples": ["Application", "System"] },
+        "Source": { "type": "string", "description": "Event source to filter by.", "examples": ["MyApp"] },
+        "EventId": { "type": "integer", "description": "Specific event ID to match.", "examples": [1001] },
+        "Since": { "type": "string", "format": "date-time", "description": "Only consider events since this timestamp.", "examples": ["2025-11-01T00:00:00Z"] }
       },
-      "additionalProperties": false
+      "unevaluatedProperties": false
     },
 
     "ServiceParameters": {
       "type": "object",
+      "description": "Parameters for Windows service checks.",
       "required": ["ServiceName"],
       "properties": {
-        "ServiceName": { "type": "string" },
-        "ExpectedStatus": {
-          "type": "string",
-          "enum": ["Running", "Stopped", "Disabled"]
-        }
+        "ServiceName": { "type": "string", "description": "Name of the Windows service.", "examples": ["w32time", "BITS"] },
+        "ExpectedStatus": { "type": "string", "enum": ["Running", "Stopped", "Disabled"], "description": "Expected status of the service.", "examples": ["Running"] }
       },
-      "additionalProperties": false
+      "unevaluatedProperties": false
     },
 
     "ProcessParameters": {
       "type": "object",
+      "description": "Parameters for process presence/count checks.",
       "required": ["ProcessName"],
       "properties": {
-        "ProcessName": { "type": "string" },
-        "ExpectedCount": { "type": "integer" }
+        "ProcessName": { "type": "string", "description": "Executable name without path.", "examples": ["explorer.exe", "powershell.exe"] },
+        "ExpectedCount": { "type": "integer", "description": "Expected number of running process instances.", "examples": [1] }
       },
-      "additionalProperties": false
+      "unevaluatedProperties": false
     },
 
     "CustomParameters": {
       "type": "object",
+      "description": "Open-ended parameter bag for custom providers. Keys and values are provider-defined.",
       "properties": {
         "Values": {
           "type": "object",
-          "additionalProperties": true
+          "description": "Arbitrary key-value pairs consumed by the custom provider.",
+          "additionalProperties": true,
+          "examples": [
+            { "Target": "MySubsystem", "Threshold": 3, "Mode": "Strict" }
+          ]
         }
       }
     },
 
     "Condition": {
       "type": "object",
+      "description": "Defines the comparison or existence logic applied to the provider's evaluated value.",
       "required": ["Operator", "Expected"],
       "properties": {
         "Operator": {
           "type": "string",
-          "enum": [
-            "Equals",
-            "NotEquals",
-            "GreaterThan",
-            "LessThan",
-            "Contains",
-            "NotContains",
-            "RegexMatch",
-            "Exists",
-            "NotExists"
-          ]
+          "description": "Comparison operator to apply.",
+          "enum": ["Equals", "NotEquals", "GreaterThan", "LessThan", "Contains", "NotContains", "RegexMatch", "Exists", "NotExists"],
+          "examples": ["Equals"]
         },
         "Expected": {
-          "type": [
-            "string",
-            "number",
-            "boolean",
-            "array",
-            "object",
-            "null"
-          ]
+          "description": "Expected value used by the operator. For Exists/NotExists, set to true/false for clarity.",
+          "type": ["string", "number", "boolean", "array", "object", "null"],
+          "examples": ["Running", 2, true]
         }
-      }
+      },
+      "unevaluatedProperties": false
     },
 
     "ExecutionOptions": {
       "type": "object",
+      "description": "Per-rule execution options.",
       "properties": {
         "RunMode": {
           "type": "string",
           "enum": ["Independent", "Sequential"],
-          "default": "Independent"
+          "default": "Independent",
+          "description": "Whether this rule runs independently or waits on prior rules."
         },
         "Timeout": {
           "type": "string",
-          "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$"
+          "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$",
+          "description": "Max time for this rule in HH:MM:SS.",
+          "examples": ["00:00:30"]
         },
-        "StopOnFailure": { "type": "boolean", "default": false },
+        "StopOnFailure": { "type": "boolean", "default": false, "description": "Stop subsequent rules if this rule fails." },
         "DependsOn": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": { "type": "string" },
+          "description": "Rule names this rule depends on.",
+          "examples": [["CheckRegistryKey"]]
         }
-      }
+      },
+      "unevaluatedProperties": false
     },
 
     "Result": {
       "type": "object",
+      "description": "Represents the outcome of a single rule evaluation.",
       "properties": {
-        "RuleName": { "type": "string" },
-        "Success": { "type": "boolean" },
-        "Message": { "type": "string" },
-        "SeverityScore": { "type": "integer" },
-        "Timestamp": { "type": "string", "format": "date-time" },
-        "SchemaVersion": { "type": "string" },
-        "ExecutionMode": {
-          "type": "string",
-          "enum": ["Independent", "Sequential"]
-        }
-      }
+        "RuleName": { "type": "string", "description": "Name of the rule that produced this result.", "examples": ["VerifyServiceStatus"] },
+        "Success": { "type": "boolean", "description": "Whether the rule passed its condition.", "examples": [true] },
+        "Message": { "type": "string", "description": "Message or details of the evaluation.", "examples": ["Service is running"] },
+        "SeverityScore": { "type": "integer", "description": "Applied severity score if the rule failed.", "examples": [7] },
+        "Timestamp": { "type": "string", "format": "date-time", "description": "When the result was recorded.", "examples": ["2025-11-24T14:45:00Z"] },
+        "SchemaVersion": { "type": "string", "description": "Schema version used for the result format.", "examples": ["1.0.0"] },
+        "ExecutionMode": { "type": "string", "enum": ["Independent", "Sequential"], "description": "Execution mode in effect for the rule.", "examples": ["Independent"] }
+      },
+      "unevaluatedProperties": false
     }
-  }
+  },
+  "unevaluatedProperties": false
 }
