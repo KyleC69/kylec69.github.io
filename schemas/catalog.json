@@ -1,11 +1,11 @@
 {
   "schemas": [
     {
-      "id": "https://kylec69.github.io/schemas/workflow.schema.json",
+      "id": "https://kylec69.github.io/schemas/workflow-schema-1.0.0.json",
       "title": "Configuration Workflow",
       "description": "Defines a workflow configuration with rules, constraints, applicability, and results. Designed to orchestrate configuration validation tasks within the Windows Configuration Analyzer framework.",
       "version": "1.0.0",
-      "metaSchema": "https://json-schema.org/draft-07/schema",
+      "metaSchema": "http://json-schema.org/draft/2020-12/schema",
       "owner": "Governance Team",
       "created": "2025-11-23T02:30:00Z",
       "tags": ["workflow", "rules", "audit", "configuration"],
