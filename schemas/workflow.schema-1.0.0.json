@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "http://json-schema.org/draft/2020-12/schema",
   "$id": "https://kylec69.github.io/schemas/workflow.schema.json",
   "title": "Workflow",
   "description": "Defines a workflow composed of rules, constraints, and results. Contributors should use this schema to author portable, audit-grade workflows.",
