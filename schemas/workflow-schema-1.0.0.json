@@ -6,6 +6,8 @@
   "type": "object",
   "required": [
     "WorkflowName",
+    "WorkflowDescription",
+    "Constraints",
     "Rules",
     "SchemaVersion",
     "Author",
@@ -17,7 +19,7 @@
     "SchemaRef": {
       "type": "string",
       "format": "uri",
-      "description": "URI reference to the schema defining this workflow.",
+      "description": "URI reference to the schema defining this workflow. This ensures the correct schema is used for validation. Workflows that do not match this schema will be rejected and ignored.",
       "examples": [
         "https://kylec69.github.io/schemas/workflow-schema-1.0.0.json"
       ]
@@ -35,6 +37,13 @@
       "examples": [
         "Windows Registry Audit",
         "Service Health Check"
+      ]
+    },
+    "WorkflowDescription": {
+      "type": "string",
+      "description": "Detailed description of the workflow's purpose and scope.",
+      "examples": [
+        "This workflow audits user profile configuration points that are critical to Windows stable operation."
       ]
     },
     "Author": {
@@ -66,19 +75,19 @@
         "MinVersion": {
           "type": "string",
           "examples": [
-            "10.0.19041"
+            "10.0.19041.0"
           ]
         },
         "MaxVersion": {
           "type": "string",
           "examples": [
-            "10.0.22621"
+            "10.0.22621.0"
           ]
         },
         "Product": {
           "type": "string",
           "examples": [
-            "Windows Server"
+            "Windows Server","Windows 10","Ubuntu"
           ]
         }
       },
@@ -176,7 +185,7 @@
           "description": "Unique identifier for the rule.",
           "examples": [
             "CheckRegistryKey",
-            "VerifyServiceStatus"
+            "windows.service.status", "windows.defender.antivirus.enabled","check.userprofile.filesystem.permissions"
           ]
         },
         "Provider": {
