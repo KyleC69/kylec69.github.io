@@ -4,17 +4,23 @@
   "title": "Workflow",
   "description": "Defines a workflow composed of rules, constraints, and results. Contributors should use this schema to author portable, audit-grade workflows.",
   "type": "object",
-  "required": ["WorkflowName", "Rules"],
+  "required": ["WorkflowName", "Rules", "SchemaVersion", "Author", "CreatedOn", "SchemaRef", "Applicability"],
   "properties": {
+    "SchemaRef": {
+      "type": "string",
+      "format": "uri",
+      "description": "URI reference to the schema defining this workflow.",
+      "examples": ["https://kylec69.github.io/schemas/workflow-schema-1.0.0.json"]
+    },
+    "SchemaVersion": {
+      "type": "string",
+      "description": "Version of the workflow schema used. Must match the schema referenced in SchemaRef.",
+      "examples": ["1.0.0"]
+    },
     "WorkflowName": {
       "type": "string",
       "description": "Human-readable name of the workflow.",
       "examples": ["Windows Registry Audit", "Service Health Check"]
-    },
-    "SchemaVersion": {
-      "type": "string",
-      "description": "Version of the workflow schema used.",
-      "examples": ["1.0.0"]
     },
     "Author": {
       "type": "string",
