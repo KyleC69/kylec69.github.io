@@ -753,7 +753,7 @@
       },
       "unevaluatedProperties": false
     },
-    "Result": {
+    "RuleResult": {
       "type": "object",
       "description": "Represents the outcome of a single rule evaluation.",
       "properties": {
