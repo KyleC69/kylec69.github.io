@@ -129,7 +129,7 @@
       "type": "array",
       "description": "Evaluation results from workflow execution.",
       "items": {
-        "$ref": "#/definitions/Result"
+        "$ref": "#/definitions/RuleResult"
       }
     }
   },
