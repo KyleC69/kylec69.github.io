@@ -7,10 +7,10 @@
     "Argument": {
       "anyOf": [
         {
-          "$ref": "#/definitions/PositionalArgument"
+          "$ref": "#/definitions/LocalTransport"
         },
         {
-          "$ref": "#/definitions/NamedArgument"
+          "$ref": "#/definitions/RemoteTransport"
         },
         {"$ref": "#/definitions/ServerDetail"}
       ],
