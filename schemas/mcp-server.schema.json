@@ -1,7 +1,6 @@
 {
   "$comment": "This is a corrected version of a document that was a collection of formats auto-generated from openapi.yaml. ",
   "$id": "https://kylec69.github.io/schemas/mcp-server.schema.json",
-  "$ref": "#/definitions/ServerDetail",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "Argument": {
